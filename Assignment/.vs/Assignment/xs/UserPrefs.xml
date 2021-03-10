@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{0D53BDC1-1577-4C30-BE15-B6277E65B58A}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assignment/GameObjects.cs">
+    <Files>
+      <File FileName="Assignment/Program.cs" Line="9" Column="39" />
+      <File FileName="Assignment/InheritorGame.cs" Line="100" Column="34" />
+      <File FileName="Assignment/GameObjects.cs" Line="344" Column="89" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Assignment" expanded="True">
+            <Node name="Assignment" expanded="True">
+              <Node name="GameObjects.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Assignment PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
