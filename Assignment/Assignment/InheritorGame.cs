@@ -120,7 +120,7 @@ public class InheritorGame : Game
     }; 
 
 
-private void SetupRooms()
+    public void SetupRooms()
     {
         entranceHall.Transitions = new Dictionary<string, Room>
         {

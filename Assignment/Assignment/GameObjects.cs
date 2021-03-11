@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 /**
  * This file contains class definitions for common game objects for the text-style
@@ -177,16 +179,24 @@ public class Room
 
 public class Game
 {
+    //[XmlElement("Scoreboard")]
     protected Scoreboard scoreboard = new Scoreboard();
+    //[XmlElement("currentRoom")]
     protected Room currentRoom;
     protected string introduction = "";
+    //[XmlArray("inventory")]
+    //[XmlArrayItem("item")]
     protected List<Item> inventory = new List<Item>();
+    //[XmlArray("enemies")]
+    //[XmlArrayItem("enemy")]
     protected List<Enemy> enemies = new List<Enemy>();
     protected int itemFlg = 0;
     protected bool validAction = false;
     protected int moveCount = 0;
     protected bool enemyMoveFlg = false;
     protected bool slayedFlg = false;
+    protected bool finishFlg = false;
+    
 
 
     public Game() { }
@@ -204,6 +214,7 @@ public class Game
         {
             validAction = false;
             itemFlg = 0;
+            
 
             if (moveCount == 1 || enemyMoveFlg)
             {
@@ -375,6 +386,7 @@ public class Game
                         validAction = true;
                     } else
                     {
+                        Console.WriteLine($"You cannot attack {attackableName} with {weaponName}.");
                         validAction = true;
                     }
                     
@@ -382,6 +394,26 @@ public class Game
                 {
                     Console.WriteLine("You don't find that item, enemy, or weapon.");
                 }
+            }
+
+            // Save function
+            // when the user inputs "save", the program will save the data such as items, the user will be able to use the data if he/she types "load"
+            else if (input.StartsWith("save"))
+            {
+                SaveGame();
+                validAction = true;
+            }
+
+            // Load function
+            // when the user inputs "load", the program will load the data that the user saved
+            else if (input.StartsWith("load"))
+            {
+                finishFlg = LoadGame();
+
+            }
+            if (finishFlg)
+            {
+                break;
             }
 
             if (currentRoom.Transitions.TryGetValue(input, out Room nextRoom))
@@ -480,10 +512,34 @@ public class Game
         return weapon1;
     }
 
+    public void SaveGame()
+    {
+        String fileName = "SavedGame.xml";
+        XmlSerializer writer = new XmlSerializer(typeof(InheritorGame));
+        StreamWriter stream = new StreamWriter(fileName);
+        writer.Serialize(stream, this);
+        stream.Close();
+        Console.WriteLine("Save complete!");
+    }
+
+    public bool LoadGame()
+    {
+        String fileName = "SavedGame.xml";
+        XmlSerializer writer = new XmlSerializer(typeof(InheritorGame));
+        StreamReader stream = new StreamReader(fileName);
+        InheritorGame loadedGame = (InheritorGame)writer.Deserialize(stream);
+        stream.Close();
+
+        //loadedGame.SetupRooms();
+        loadedGame.InputLoop();
+        return true;
+    }
+
     public void PrintScore()
     {
         Console.WriteLine($"Your score was: {scoreboard.Score}");
     }
-    
+
+
 
 }
