@@ -4,6 +4,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Creates the rooms, transitions, and items for this adventure game and connects them.
 /// </summary>
+[Serializable]
 public class InheritorGame : Game
 {
     const string NORTH = "north";
@@ -14,11 +15,11 @@ public class InheritorGame : Game
     const string DOWN = "down";
 
     // outside the house
-    Room outside = new Room { RoomDescription = "You decide to take what you've already found and leave. Something about this place unnerves you, and you never return.", Items = new List<Item>(), FinalRoom = true, RoomName = "outside" };
+    public Room outside = new Room { RoomDescription = "You decide to take what you've already found and leave. Something about this place unnerves you, and you never return.", Items = new List<Item>(), FinalRoom = true, RoomName = "outside" };
     // entrance hall
-    Room entranceHall = new Room { RoomDescription = "You are in the entrance hall. There is a door leading further into the house to the north, and an exit to the south.", Items = new List<Item>(), FinalRoom = false, RoomName = "entrance hall" };
+    public Room entranceHall = new Room { RoomDescription = "You are in the entrance hall. There is a door leading further into the house to the north, and an exit to the south.", Items = new List<Item>(), FinalRoom = false, RoomName = "entrance hall" };
     // living room
-    Room livingRoom = new Room
+    public Room livingRoom = new Room
     {
         RoomDescription = "You are in the living room. There are doors to the north, south, east, and west. There is a staircase going down.",
         Items = new List<Item> {
@@ -31,7 +32,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // painting room
-    Room paintingRoom = new Room
+    public Room paintingRoom = new Room
     {
         RoomDescription = "You are in the painting room. There is a Harpsichord. A painting depicts a skeleton holding open a gateway to an underground passage. A male elf is entering the passage. A female elf is holding a strange orb. A human man stands to the side observing.",
         Items = new List<Item> {
@@ -44,7 +45,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // kitchen
-    Room kitchen = new Room
+    public Room kitchen = new Room
     {
         RoomDescription = "You are in the kitchen. A table seems to have been used recently for the preparation of food. A passage leads to the west.",
         Items = new List<Item> {
@@ -55,7 +56,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // fancy bedroom
-    Room fancyBedroom = new Room
+    public Room fancyBedroom = new Room
     {
         RoomDescription = "You are in the fancy bedroom. There is a four-poster bed with red sheets. There is a closed chest at the foot of the bed.",
         Items = new List<Item> {
@@ -67,7 +68,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // cellar
-    Room cellar = new Room
+    public Room cellar = new Room
     {
         RoomDescription = "You are in a tidy cellar. There are barrels of wine here. A door leads to the north, and a staircase goes up.",
         Items = new List<Item>{
@@ -77,7 +78,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // library
-    Room library = new Room
+    public Room library = new Room
     {
         RoomDescription = "You are in a large library. There are many books about anatomy, history, and alchemy. Some of the books are written in Elven. There is a door to the south.",
         Items = new List<Item> {
@@ -88,7 +89,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // laboratory
-    Room laboratory = new Room
+    public Room laboratory = new Room
     {
         RoomDescription = "You find yourself in a strange laboratory. A lamp with a red filter lights the room. There is a secret passage to the south. There is a door with a skull to the north.",
         Items = new List<Item> {
@@ -100,7 +101,7 @@ public class InheritorGame : Game
         FinalRoom = false
     };
     // skeleton room
-    Room skeletonRoom = new Room
+    public Room skeletonRoom = new Room
     {
         RoomDescription = "The strange door opens into darkness. You peer in, and a pair of skeletal hands reach out and drags you in! The last thing you see is a strange underground passage before the last of the light disappears.",
         Items = new List<Item>(),
@@ -109,7 +110,7 @@ public class InheritorGame : Game
     };
 
     // enemy Troll
-    Enemy troll = new Enemy
+    public Enemy troll = new Enemy
     {
         Name = "Troll",
         IsDestroyed = false,
@@ -172,12 +173,14 @@ public class InheritorGame : Game
 
         //Troll
         troll.enemyCurrentRoom = laboratory;
+        enemies.Clear();
         enemies.Add(troll);
 
     }
 
     public InheritorGame()
     {
+
         currentRoom = entranceHall;
         
         introduction = "Weeks ago, you received a mysterious letter claiming that your late grandfather (who you don't know anything about) left you his house and land in the mountains. Having no property yourself, this is a substantial inheritance. After a few days of hiking into the countryside, you come upon the house, opulent and imperial, standing proudly against the hills leading into the mountain behind it.";

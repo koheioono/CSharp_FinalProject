@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 /// <summary>
 /// A scoreboard object that can be used to tabulate a final score.
 /// </summary>
+[Serializable]
 public class Scoreboard
 {
     public uint Score { get; set; }
@@ -24,6 +25,8 @@ public class Scoreboard
 /// <summary>
 /// An attackable item that creates a new item when IsDestroyed is true
 /// </summary>
+[XmlInclude(typeof(AttackableItem))]
+[XmlInclude(typeof(Enemy))]
 public interface IAttackable
 {
     // you decide what members IAttackable should have
@@ -35,6 +38,7 @@ public interface IAttackable
 /// <summary>
 /// A weapon to attack an enemy
 /// </summary>
+[XmlInclude(typeof(WeaponItem))]
 public interface IWeapon
 {
     // you decide what members IWeapon should have
@@ -47,6 +51,7 @@ public interface IWeapon
 /// <summary>
 /// An item that can be picked up and added to inventory.
 /// </summary>
+[Serializable]
 public class Item
 {
     /// <summary>
@@ -74,6 +79,7 @@ public class Item
 
 }
 
+[Serializable]
 public class AttackableItem : Item, IAttackable
 {
     
@@ -81,6 +87,8 @@ public class AttackableItem : Item, IAttackable
     public Item NewItem { get; set; }
 }
 
+[Serializable]
+[XmlInclude(typeof(IWeapon))]
 public class WeaponItem : Item, IWeapon
 {
     public bool IsAWeapon { get; set; }
@@ -109,6 +117,7 @@ public class WeaponItem : Item, IWeapon
 /// <summary>
 /// Enemy class
 /// </summary>
+[Serializable]
 public class Enemy : Item, IAttackable
 {
     //public String Name { get; set; }
@@ -120,6 +129,7 @@ public class Enemy : Item, IAttackable
     public bool inventoryFlg { get; set; } = false;
 }
 
+[Serializable]
 public class Room
 {
     /// <summary>
@@ -134,6 +144,7 @@ public class Room
     public List<Item> Items { get; set; }
 
     // initialize to an empty dict
+    [XmlIgnore]
     public Dictionary<string, Room> Transitions { get; set; }
 
     public void PrintRoom(List<Enemy> enemies = null)
@@ -177,25 +188,26 @@ public class Room
     }
 }
 
+[Serializable]
 public class Game
 {
     //[XmlElement("Scoreboard")]
-    protected Scoreboard scoreboard = new Scoreboard();
+    public Scoreboard scoreboard = new Scoreboard();
     //[XmlElement("currentRoom")]
-    protected Room currentRoom;
-    protected string introduction = "";
+    public Room currentRoom;
+    public string introduction = "";
     //[XmlArray("inventory")]
     //[XmlArrayItem("item")]
-    protected List<Item> inventory = new List<Item>();
+    public List<Item> inventory = new List<Item>();
     //[XmlArray("enemies")]
     //[XmlArrayItem("enemy")]
-    protected List<Enemy> enemies = new List<Enemy>();
-    protected int itemFlg = 0;
-    protected bool validAction = false;
-    protected int moveCount = 0;
-    protected bool enemyMoveFlg = false;
-    protected bool slayedFlg = false;
-    protected bool finishFlg = false;
+    public List<Enemy> enemies = new List<Enemy>();
+    public int itemFlg = 0;
+    public bool validAction = false;
+    public int moveCount = 0;
+    public bool enemyMoveFlg = false;
+    public bool slayedFlg = false;
+    public bool finishFlg = false;
     
 
 
@@ -514,12 +526,19 @@ public class Game
 
     public void SaveGame()
     {
-        String fileName = "SavedGame.xml";
-        XmlSerializer writer = new XmlSerializer(typeof(InheritorGame));
-        StreamWriter stream = new StreamWriter(fileName);
-        writer.Serialize(stream, this);
-        stream.Close();
-        Console.WriteLine("Save complete!");
+        try
+        {
+            String fileName = "SavedGame.xml";
+            XmlSerializer writer = new XmlSerializer(typeof(InheritorGame));
+            StreamWriter stream = new StreamWriter(fileName);
+            writer.Serialize(stream, this);
+            stream.Close();
+            Console.WriteLine("Save complete!");
+        } catch(Exception)
+        {
+            throw;
+        }
+        
     }
 
     public bool LoadGame()
@@ -529,6 +548,8 @@ public class Game
         StreamReader stream = new StreamReader(fileName);
         InheritorGame loadedGame = (InheritorGame)writer.Deserialize(stream);
         stream.Close();
+
+        Console.WriteLine("Loaded!");
 
         //loadedGame.SetupRooms();
         loadedGame.InputLoop();
